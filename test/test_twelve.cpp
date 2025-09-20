@@ -1,125 +1,124 @@
 #include <gtest/gtest.h>
 #include "twelve.hpp"
 
-TEST(ArrayTest, DefaultConstructor) {
-    Array num;
+TEST(TwelveTest, DefaultConstructor) {
+    Twelve num;
     EXPECT_EQ(num.getSize(), 0);
 }
 
-TEST(ArrayTest, SizeConstructor) {
-    Array num(3, 5);
+TEST(TwelveTest, SizeConstructor) {
+    Twelve num(3, 5);
     EXPECT_EQ(num.getSize(), 3);
     EXPECT_EQ(num.toString(), "555");
 }
 
-TEST(ArrayTest, StringConstructorValid) {
-    Array num("12A");
+TEST(TwelveTest, StringConstructorValid) {
+    Twelve num("12A");
     EXPECT_EQ(num.getSize(), 3);
     EXPECT_EQ(num.toString(), "12A");
 }
 
-TEST(ArrayTest, StringConstructorInvalid) {
-    EXPECT_THROW(Array num("12G"), std::invalid_argument);
+TEST(TwelveTest, StringConstructorInvalid) {
+    EXPECT_THROW(Twelve num("12G"), std::invalid_argument);
 }
 
-TEST(ArrayTest, InitializerListConstructor) {
-    Array num{10, 2, 1};
+TEST(TwelveTest, InitializerListConstructor) {
+    Twelve num{10, 2, 1};
     EXPECT_EQ(num.getSize(), 3);
     EXPECT_EQ(num.toString(), "12A");
 }
 
-TEST(ArrayTest, Equals) {
-    Array num1("12A");
-    Array num2("12A");
-    Array num3("12B");
+TEST(TwelveTest, Equals) {
+    Twelve num1("12A");
+    Twelve num2("12A");
+    Twelve num3("12B");
     
     EXPECT_TRUE(num1.equals(num2));
     EXPECT_FALSE(num1.equals(num3));
 }
 
-TEST(ArrayTest, LessThan) {
-    Array num1("12A");
-    Array num2("12B");
-    Array num3("13A");
+TEST(TwelveTest, LessThan) {
+    Twelve num1("12A");
+    Twelve num2("12B");
+    Twelve num3("13A");
     
     EXPECT_TRUE(num1.lessThan(num2));
     EXPECT_TRUE(num2.lessThan(num3));
     EXPECT_FALSE(num3.lessThan(num1));
 }
 
-TEST(ArrayTest, GreaterThan) {
-    Array num1("12B");
-    Array num2("12A");
-    Array num3("11B");
+TEST(TwelveTest, GreaterThan) {
+    Twelve num1("12B");
+    Twelve num2("12A");
+    Twelve num3("11B");
     
     EXPECT_TRUE(num1.greaterThan(num2));
     EXPECT_TRUE(num2.greaterThan(num3));
     EXPECT_FALSE(num3.greaterThan(num1));
 }
 
-TEST(ArrayTest, Addition) {
-    Array num1("5");
-    Array num2("7");
-    Array result = num1.add(num2);
-    EXPECT_EQ(result.toString(), "10");
+TEST(TwelveTest, Addition) {
+    Twelve num1("5");
+    Twelve num2("7");
+    Twelve result_add2(num1.add(num2));
+    EXPECT_EQ(result_add2.toString(), "10");
     
-    Array num3("A");
-    Array num4("3");
-    result = num3.add(num4);
-    EXPECT_EQ(result.toString(), "11");
+    Twelve num3("A");
+    Twelve num4("3");
+    Twelve result_add4(num3.add(num4));
+    EXPECT_EQ(result_add4.toString(), "11");
     
-    Array num5("1B");
-    Array num6("5");
-    result = num5.add(num6);
-    EXPECT_EQ(result.toString(), "24");
+    Twelve num5("1B");
+    Twelve num6("5");
+    Twelve result_add6(num5.add(num6));
+    EXPECT_EQ(result_add6.toString(), "24");
 }
 
-TEST(ArrayTest, Subtraction) {
-    Array num1("A");
-    Array num2("5");
-    Array result = num1.substract(num2);
-    EXPECT_EQ(result.toString(), "5");
+TEST(TwelveTest, Subtraction) {
+    Twelve num1("A");
+    Twelve num2("5");
+    Twelve result_sub2(num1.substract(num2));
+    EXPECT_EQ(result_sub2.toString(), "5");
     
-    Array num3("15");
-    Array num4("A");
-    result = num3.substract(num4);
-    EXPECT_EQ(result.toString(), "7");
+    Twelve num3("15");
+    Twelve num4("A");
+    Twelve result_sub4(num3.substract(num4));
+    EXPECT_EQ(result_sub4.toString(), "7");
 }
 
-TEST(ArrayTest, ZeroOperations) {
-    Array zero("0");
-    Array num("12A");
+TEST(TwelveTest, ZeroOperations) {
+    Twelve zero("0");
+    Twelve num("12A");
 
-    Array result_sum = num.add(zero);
+    Twelve result_sum(num.add(zero));
     EXPECT_EQ(result_sum.toString(), "12A");
 
-    Array result_sub = num.substract(zero);
+    Twelve result_sub(num.substract(zero));
     EXPECT_EQ(result_sub.toString(), "12A");
     
 }
 
-TEST(ArrayTest, LargeNumbers) {
-    Array num1("1000000");
-    Array num2("1");
-    Array result_sum = num1.add(num2);
+TEST(TwelveTest, LargeNumbers) {
+    Twelve num1("1000000");
+    Twelve num2("1");
+    Twelve result_sum(num1.add(num2));
     EXPECT_EQ(result_sum.toString(), "1000001");
     
-    Array result_sub = num1.substract(num2);
+    Twelve result_sub(num1.substract(num2));
     EXPECT_EQ(result_sub.toString(), "BBBBBB");
 }
 
-TEST(ArrayTest, CopyConstructor) {
-    Array original("12AB");
-    Array copy(original);
+TEST(TwelveTest, CopyConstructor) {
+    Twelve original("12AB");
+    Twelve copy(original);
     
     EXPECT_TRUE(original.equals(copy));
     EXPECT_EQ(original.toString(), copy.toString());
 }
 
-TEST(ArrayTest, AssignmentOperator) {
-    Array original("12AB");
-    Array assigned;
-    assigned = original;
+TEST(TwelveTest, AssignmentOperator) {
+    Twelve original("12AB");
+    Twelve assigned(original);
     
     EXPECT_TRUE(original.equals(assigned));
     EXPECT_EQ(original.toString(), assigned.toString());

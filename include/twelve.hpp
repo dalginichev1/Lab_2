@@ -4,42 +4,43 @@
 #include <initializer_list>
 #include <string>
 
-class Array
+class Twelve
 {
     private:
         size_t size;
         unsigned char * data;
 
-        static Array add(const Array& a, const Array& b);
-        static Array substract(const Array& a, const Array& b);
-        static Array mult(const Array& a, const Array& b);
-        static Array div(const Array& a, const Array& b);
-        Array multByDigit(unsigned char digit) const;
+        static Twelve add(const Twelve& a, const Twelve& b);
+        static Twelve substract(const Twelve& a, const Twelve& b);
+        static Twelve mult(const Twelve& a, const Twelve& b);
+        static Twelve div(const Twelve& a, const Twelve& b);
+        Twelve multByDigit(unsigned char digit) const;
         void shiftLeft(size_t position);
-        static Array substractForDivision(const Array& a, const Array& b);
+        static Twelve substractForDivision(const Twelve& a, const Twelve& b);
 
     public:
-        Array();
-        Array(const size_t& n, unsigned char t = 0);
-        Array(const std::initializer_list<unsigned char>& t);
-        Array(const std::string& t);
-        Array(const Array& other);
-        Array(Array&& other) noexcept;
-        virtual ~Array() noexcept;
+        Twelve();
+        Twelve(const size_t& n, unsigned char t = 0);
+        Twelve(const std::initializer_list<unsigned char>& t);
+        Twelve(const std::string& t);
+        Twelve(const Twelve& other);
+        Twelve(Twelve&& other) noexcept;
+        virtual ~Twelve() noexcept;
 
     size_t getSize() const;
 
-    Array& operator=(const Array& other);
-    Array add(const Array& other) const;
-    Array substract(const Array& other) const;
-    Array mult(const Array& other) const;
-    Array div(const Array& other) const;
-    static int compareAbsolute(const Array& a, const Array& b);
+    Twelve copy() const; 
+
+    Twelve add(const Twelve& other) const;
+    Twelve substract(const Twelve& other) const;
+    Twelve mult(const Twelve& other) const;
+    Twelve div(const Twelve& other) const;
+    static int compareAbsolute(const Twelve& a, const Twelve& b);
 
     bool isZero() const;
-    bool equals(const Array& other) const;
-    bool lessThan(const Array& other) const;
-    bool greaterThan(const Array& other) const;
+    bool equals(const Twelve& other) const;
+    bool lessThan(const Twelve& other) const;
+    bool greaterThan(const Twelve& other) const;
 
     std::string toString() const;
 };

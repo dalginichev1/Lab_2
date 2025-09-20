@@ -3,18 +3,18 @@
 #include <stdexcept>
 #include "twelve.hpp"
 
-void printNumber(const Array& num, const std::string& name) {
+void printNumber(const Twelve& num, const std::string& name) {
     std::cout << name << " = " << num.toString() << std::endl;
 }
 
-Array inputNumber(const std::string& prompt) {
+Twelve inputNumber(const std::string& prompt) {
     std::string input;
     while (true) {
         std::cout << prompt;
         std::cin >> input;
 
         try {
-            Array result(input);
+            Twelve result(input);
             return result;
         } catch (const std::invalid_argument& e) {
             std::cout << "Ошибка: неверный формат числа. Используйте цифры 0-9 и буквы A-B" << std::endl;
@@ -23,22 +23,36 @@ Array inputNumber(const std::string& prompt) {
     }
 }
 
+void copyOperation(const Twelve& original)
+{
+    Twelve copy = original.copy();
+
+    printNumber(original, "Original");
+    printNumber(copy, "Copy");
+
+    std::cout << "Original's adress: " << &original << std::endl;
+    std::cout << "Copy's adress: " << &copy << std::endl;
+    std::cout << "Is objects equal?: " << (original.equals(copy) ? true : false) << std::endl;
+
+    std::cout << "It is same objects: " << (&original == &copy ? true : false) << std::endl;
+}
+
 int main() {
     std::cout << "=== Калькулятор двенадцатеричных чисел ===" << std::endl;
-    std::cout << "Доступные операции: +, -, *, /, ==, <, >" << std::endl;
+    std::cout << "Доступные операции: +, -, copy, ==, <, >" << std::endl;
     std::cout << "Используйте цифры 0-9 и буквы A-B для ввода чисел" << std::endl << std::endl;
 
     while (true) {
         try {
-            Array num1 = inputNumber("Введите первое число: ");
+            Twelve num1 = inputNumber("Введите первое число: ");
             printNumber(num1, "Первое число");
 
             std::string operation;
-            std::cout << "Введите операцию (+, -, ==, <, >): ";
+            std::cout << "Введите операцию (+, -, copy, ==, <, >): ";
             std::cin >> operation;
 
             if (operation == "==" || operation == "<" || operation == ">") {
-                Array num2 = inputNumber("Введите второе число: ");
+                Twelve num2 = inputNumber("Введите второе число: ");
                 printNumber(num2, "Второе число");
 
                 if (operation == "==") {
@@ -48,17 +62,21 @@ int main() {
                 } else if (operation == ">") {
                     std::cout << "Результат: " << (num1.greaterThan(num2) ? "true" : "false") << std::endl;
                 }
-            } else {
-                Array num2 = inputNumber("Введите второе число: ");
+            }
+            else if (operation == "copy"){
+                copyOperation(num1);
+            }
+            else {
+                Twelve num2 = inputNumber("Введите второе число: ");
                 printNumber(num2, "Второе число");
 
-                Array result;
+                Twelve result;
 
                 if (operation == "+") {
-                    result = num1.add(num2);
+                    Twelve result(num1.add(num2));
                     std::cout << "Результат сложения: ";
                 } else if (operation == "-") {
-                    result = num1.substract(num2);
+                    Twelve result(num1.substract(num2));
                     std::cout << "Результат вычитания: ";
                 } else {
                     std::cout << "Неизвестная операция!" << std::endl;
