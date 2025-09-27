@@ -13,16 +13,8 @@ void Array::clear()
 void Array::copyFrom(const Array& other)
 {
     _size = other._size;
-
-    if (_size > 0)
-    {
-        data = new unsigned char[_size];
-        std::copy(other.data, other.data + _size, data);
-    }
-    else
-    {
-        data = nullptr;
-    }
+    data = new unsigned char[_size];
+    std::copy(other.data, other.data + _size, data);
 }
 
 Array::Array(): _size(0), data(nullptr) {};
@@ -79,21 +71,11 @@ Array::Array(const std::string& t): _size(t.length()), data(nullptr)
 
 unsigned char Array::get(const size_t& index) const
 {
-    if (index >= _size)
-    {
-        throw std::out_of_range("Input index is out of range");
-    }
-
     return data[index];
 }
 
 void Array::set(const size_t& index, const unsigned char& value) const
 {
-    if (index >= _size)
-    {
-        throw std::out_of_range("Input index is out of range");
-    }
-
     data[index] = value;
 }
 
