@@ -4,18 +4,13 @@
 #include <stdexcept>
 #include "array.hpp"
 
-void Array::cleanup()
-{
-    delete[] data;
-    data = nullptr;
-    _size = 0;
-}
-
 void Array::copyFrom(const Array& other)
 {
     if (this == &other) return;
 
-    cleanup();
+    delete[] data;
+    data = nullptr;
+    _size = 0;
 
     _size = other._size;
     if (_size > 0)
@@ -36,17 +31,15 @@ Array::Array(size_t size, unsigned char value): _size(size), data(nullptr)
     }
 }
 
-Array::Array(const std::initializer_list<unsigned char>& t): _size(t.size()), data(nullptr)
+Array::Array(const std::initializer_list<unsigned char>& t)
 {
-    if (_size > 0)
+    data = new unsigned char[_size];
+    size_t i = 0;
+    for (unsigned char value: t)
     {
-        data = new unsigned char[_size];
-        size_t i = 0;
-        for (auto it = t.begin(); it != t.end(); ++it, ++i)
-        {
-            data[i] = *it;
-        }
+        data[++i] = value;
     }
+
 }
 
 Array::Array(const Array& other): _size(0), data(nullptr)
@@ -78,7 +71,9 @@ Array::Array(const std::string& t): _size(t.length()), data(nullptr)
             }
             else
             {
-                cleanup();
+                delete[] data;
+                data = nullptr;
+                _size = 0;
                 throw std::invalid_argument("Invalid character");
             }
         }
@@ -121,7 +116,9 @@ void Array::resize(size_t newSize, unsigned char value)
 
     if (newSize == 0)
     {
-        cleanup();
+        delete[] data;
+        data = nullptr;
+        _size = 0;
         return;
     }
 
@@ -139,12 +136,17 @@ void Array::resize(size_t newSize, unsigned char value)
         std::fill(newData + _size, newData + newSize, value);
     }
 
-    cleanup();
+    delete[] data;
+    data = nullptr;
+    _size = 0;
+
     data = newData;
     _size = newSize;
 }
 
 Array::~Array() noexcept
 {
-    cleanup();
+    delete[] data;
+    data = nullptr;
+    _size = 0;
 }

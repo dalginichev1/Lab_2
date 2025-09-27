@@ -6,7 +6,6 @@ class Array
     private:
         size_t _size;
         unsigned char * data;
-        void cleanup();
         void copyFrom(const Array& other);
     
     public:
@@ -16,7 +15,7 @@ class Array
         Array(const std::string& t);
         Array(const Array& other);
         Array(Array&& other) noexcept;
-        ~Array() noexcept;
+        virtual ~Array() noexcept;
 
         size_t size() const;
         bool empty() const; 

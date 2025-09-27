@@ -10,9 +10,10 @@ Twelve::Twelve(const size_t& n, unsigned char t): data(n, t) {};
 Twelve::Twelve(const std::initializer_list<unsigned char>& t): data(t.size())
 {
     size_t i = t.size() - 1;
-    for (auto it = t.begin(); it != t.end(); ++it, --i)
+    for (auto it: t)
     {
-        data.set(i, *it);
+        data.set(i, it);
+        --i;
     }
 }
 
@@ -27,10 +28,6 @@ Twelve::Twelve(const std::string& s): data(1, 0)
     while (start < s.length() && s[start] == '0')
     {
         ++start;
-    }
-    if (start == s.length())
-    {
-        return;
     }
 
     size_t strSize = s.length() - start;
@@ -70,11 +67,6 @@ Twelve::~Twelve() noexcept {}
 size_t Twelve::getSize(const Twelve& num) 
 {
     return num.data.size();
-}
-
-bool Twelve::isZero(const Twelve& num)
-{
-    return num.data.size() == 1 && num.data.get(0) == 0;
 }
 
 int Twelve::compareAbsolute(const Twelve& a, const Twelve& b)
@@ -179,170 +171,6 @@ Twelve Twelve::substract(const Twelve& a, const Twelve& b)
 
     return result;
 }
-
-/*
-Array Array::multByDigit(unsigned char digit) const
-{
-    if (digit == 0)
-    {
-        return Array(1, 0);
-    }
-
-    Array result(size + 1, 0);
-    int carry = 0;
-
-    for (size_t i = 0; i < size; ++i)
-    {
-        int prod = data[i] * digit + carry;
-        result.data[i] = prod % 12;
-        carry = prod / 12;
-    }
-
-    if (carry > 0)
-    {
-        result.data[size] = carry;
-    }
-    else
-    {
-        Array trimmed(result.size - 1, 0);
-        std::memcpy(trimmed.data, result.data, (result.size) * sizeof(unsigned char));
-        return trimmed;
-    }
-
-    return result;
-}
-
-Array Array::shiftLeft(size_t position) const
-{
-    if ((size == 0 && data[0] == 0) || position == 0)
-    {
-        return *this;
-    }
-
-    Array result(size + position, 0);
-    std::memcpy(result.data + position, data, size * sizeof(unsigned char));
-    return result;
-}
-
-Array Array::mult(const Array& a, const Array& b)
-{
-    if (a.isZero || b.isZero)
-    {
-        return Array(1, 0);
-    }
-
-    Array result(1, 0);
-
-    for (size_t i = 0; i < b.size; ++i)
-    {
-        Array temp = a.multByDigit(b.data[i]);
-        Array shift = temp.shiftLeft(i);
-        result = add(result, shilft);
-    }
-
-    return result;
-}
-
-Array Array::substractForDivision(const Array& a, const Array& b)
-{
-    Array result(a.size, 0);
-    int borrow = 0;
-
-    for (size_t i = 0; i < a.size; ++i)
-    {
-        int digit_a = a.data[i];
-        int digit_b = (i < b.size) ? b.data[i] : 0;
-        int diff = digit_a - digit_b - borrow;
-
-        if (diff < 0)
-        {
-            diff += 12;
-            borrow = 1;
-        }
-        
-        else
-        {
-            borrow = 0;
-        }
-
-        result.data[i] = diff;
-    }
-
-    size_t realSize = result.size;
-    while(realSize > 1 && result.data[realSize - 1] == 0)
-    {
-        --realSize;
-    }
-
-    if (realSize != result.size)
-    {
-        Array trimmed(realSize, 0);
-        std::memcpy(trimmed.data, result.data, realSize * sizeof(unsigned char));
-        return trimmed;
-    }
-
-    return result;
-}
-
-Array Array::div(const Array& a, const Array& b)
-{
-    if (b.isZero())
-    {
-        throw std::invalid_argument("Divison by zero");
-    }
-
-    if (a.isZero())
-    {
-        return Array(1, 0);
-    }
-
-    int cmp = compareAbsolute(a, b);
-    if (cmp < 0)
-    {
-        return Array(1, 0);
-    }
-
-    if (cmp == 0)
-    {
-        return Array(1, 1);
-    }
-
-    Array dividend = a;
-
-    size_t maxDivSize = a.size - b.size + 1;
-    Array div(maxDivSize, 0);
-
-    for (int i = maxDivSize - 1; i >= 0; --i)
-    {
-        Array shiftDiv = b.shiftLeft(i);
-
-        unsigned char digit = 0;
-        while (compareAbsolute(dividend, shiftDiv) >= 0)
-        {
-            ++digit;
-            dividend = substractForDivision(dividend, shiftDiv);
-        }
-
-        div.data[i] = digit;
-        
-        size_t realDivSize = div.size;
-        while(realDivSize > 1 && div.data[realDivSize - 1] == 0)
-        {
-            --realDivSize;
-        }
-
-        if (realDivSize != div.size)
-        {
-            Array trimmed(realDivSize, 0);
-            std::memcpy(trimmed.data, div.data, realDivSize * size(unsigned char));
-            return trimmed;
-        }
-
-        return div;
-    }
-}
-
-*/
 
 bool Twelve::equals(const Twelve& a, const Twelve& b) 
 {

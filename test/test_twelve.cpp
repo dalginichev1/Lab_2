@@ -142,16 +142,6 @@ TEST(TwelveTest, MoveConstructor) {
     EXPECT_EQ(Twelve::toString(moved), "12AB");
 }
 
-TEST(TwelveTest, IsZero) {
-    Twelve zero1("0");
-    Twelve zero2(1, 0);
-    Twelve nonZero("1");
-    
-    EXPECT_TRUE(Twelve::isZero(zero1));
-    EXPECT_TRUE(Twelve::isZero(zero2));
-    EXPECT_FALSE(Twelve::isZero(nonZero));
-}
-
 TEST(TwelveTest, CompareAbsolute) {
     Twelve num1("12A");
     Twelve num2("12A");
