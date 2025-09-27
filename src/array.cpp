@@ -12,10 +12,6 @@ void Array::clear()
 
 void Array::copyFrom(const Array& other)
 {
-    if (this == &other) return;
-
-    clear();
-
     _size = other._size;
 
     if (_size > 0)
@@ -33,11 +29,8 @@ Array::Array(): _size(0), data(nullptr) {};
 
 Array::Array(size_t size, unsigned char value): _size(size), data(nullptr)
 {
-    if (_size > 0)
-    {
-        data = new unsigned char[_size];
-        std::fill(data, data + _size, value);
-    }
+    data = new unsigned char[_size];
+    std::fill(data, data + _size, value);
 }
 
 Array::Array(const std::initializer_list<unsigned char>& t)
@@ -64,25 +57,22 @@ Array::Array(Array&& other) noexcept: _size(other._size), data(other.data)
 
 Array::Array(const std::string& t): _size(t.length()), data(nullptr)
 {
-    if (_size > 0)
+    data = new unsigned char[_size];
+    for (size_t i = 0; i < _size; ++i)
     {
-        data = new unsigned char[_size];
-        for (size_t i = 0; i < _size; ++i)
+        char c = t[i];
+        if (c >= '0' && c <= '9')
         {
-            char c = t[i];
-            if (c >= '0' && c <= '9')
-            {
-                data[_size - i - 1] = c - '0';
-            }
-            else if (c == 'A' || c == 'a')
-            {
-                data[_size - i - 1] = 10;
-            }
-            else
-            {
-                clear();
-                throw std::invalid_argument("Invalid character");
-            }
+            data[_size - i - 1] = c - '0';
+        }
+        else if (c == 'A' || c == 'a')
+        {
+            data[_size - i - 1] = 10;
+        }
+        else
+        {
+            clear();
+            throw std::invalid_argument("Invalid character");
         }
     }
 }

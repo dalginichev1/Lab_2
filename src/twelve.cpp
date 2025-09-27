@@ -19,11 +19,6 @@ Twelve::Twelve(const std::initializer_list<unsigned char>& t): data(t.size())
 
 Twelve::Twelve(const std::string& s): data(1, 0)
 {
-    if (s.empty())
-    {
-        return;
-    }
-    
     size_t start = 0;
     while (start < s.length() && s[start] == '0')
     {
@@ -172,24 +167,6 @@ Twelve Twelve::substract(const Twelve& a, const Twelve& b)
     return result;
 }
 
-bool Twelve::equals(const Twelve& a, const Twelve& b) 
-{
-    if (a.data.size() != b.data.size())
-    {
-        return false;
-    }
-
-    for (size_t i = 0; i < a.data.size(); ++i)
-    {
-        if (a.data.get(i) != b.data.get(i))
-        {
-            return false;
-        }
-    }
-
-    return true;
-}
-
 bool Twelve::lessThan(const Twelve& a, const Twelve& b) 
 {
     if (a.data.size() > b.data.size())
@@ -220,6 +197,11 @@ bool Twelve::lessThan(const Twelve& a, const Twelve& b)
 bool Twelve::greaterThan(const Twelve& a, const Twelve& b) 
 {
     return lessThan(b, a);
+}
+
+bool Twelve::equals(const Twelve& a, const Twelve& b) 
+{
+    return !greaterThan(a, b) && !greaterThan(b, a);
 }
 
 std::string Twelve::toString(const Twelve& num)
