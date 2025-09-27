@@ -6,6 +6,7 @@ class Array
     private:
         size_t _size;
         unsigned char * data;
+        void clear();
         void copyFrom(const Array& other);
     
     public:

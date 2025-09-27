@@ -4,19 +4,28 @@
 #include <stdexcept>
 #include "array.hpp"
 
+void Array::clear()
+{
+    delete[] data;
+    data = nullptr;
+}
+
 void Array::copyFrom(const Array& other)
 {
     if (this == &other) return;
 
-    delete[] data;
-    data = nullptr;
-    _size = 0;
+    clear();
 
     _size = other._size;
+
     if (_size > 0)
     {
         data = new unsigned char[_size];
         std::copy(other.data, other.data + _size, data);
+    }
+    else
+    {
+        data = nullptr;
     }
 }
 
@@ -71,9 +80,7 @@ Array::Array(const std::string& t): _size(t.length()), data(nullptr)
             }
             else
             {
-                delete[] data;
-                data = nullptr;
-                _size = 0;
+                clear();
                 throw std::invalid_argument("Invalid character");
             }
         }
@@ -112,16 +119,6 @@ bool Array::empty() const
 
 void Array::resize(size_t newSize, unsigned char value)
 {
-    if (newSize == _size) return;
-
-    if (newSize == 0)
-    {
-        delete[] data;
-        data = nullptr;
-        _size = 0;
-        return;
-    }
-
     unsigned char* newData = new unsigned char[newSize];
 
     size_t copySize = std::min(_size, newSize);
@@ -136,9 +133,7 @@ void Array::resize(size_t newSize, unsigned char value)
         std::fill(newData + _size, newData + newSize, value);
     }
 
-    delete[] data;
-    data = nullptr;
-    _size = 0;
+    clear();
 
     data = newData;
     _size = newSize;
@@ -147,6 +142,4 @@ void Array::resize(size_t newSize, unsigned char value)
 Array::~Array() noexcept
 {
     delete[] data;
-    data = nullptr;
-    _size = 0;
 }
