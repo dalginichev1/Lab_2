@@ -3,20 +3,20 @@
 #include <stdexcept>
 #include "twelve.hpp"
 
-Twelve::Twelve() : _data(1, 0) {};
+Twelve::Twelve() : data(1, 0) {};
 
-Twelve::Twelve(const size_t& n, unsigned char t): _data(n, t) {};
+Twelve::Twelve(const size_t& n, unsigned char t): data(n, t) {};
 
-Twelve::Twelve(const std::initializer_list<unsigned char>& t): _data(t.size())
+Twelve::Twelve(const std::initializer_list<unsigned char>& t): data(t.size())
 {
     size_t i = t.size() - 1;
     for (auto it = t.begin(); it != t.end(); ++it, --i)
     {
-        _data.set(i, *it);
+        data.set(i, *it);
     }
 }
 
-Twelve::Twelve(const std::string& s): _data(1, 0)
+Twelve::Twelve(const std::string& s): data(1, 0)
 {
     if (s.empty())
     {
@@ -34,7 +34,7 @@ Twelve::Twelve(const std::string& s): _data(1, 0)
     }
 
     size_t strSize = s.length() - start;
-    _data.resize(strSize);
+    data.resize(strSize);
 
     for (size_t i = 0; i < strSize; ++i)
     {
@@ -57,35 +57,35 @@ Twelve::Twelve(const std::string& s): _data(1, 0)
             throw std::invalid_argument("Invalid character");
         }
 
-        _data.set(strSize - i - 1, value);
+        data.set(strSize - i - 1, value);
     }
 }
 
-Twelve::Twelve(const Twelve& other): _data(other._data) {}
+Twelve::Twelve(const Twelve& other): data(other.data) {}
 
-Twelve::Twelve(Twelve&& other) noexcept: _data(std::move(other._data)) {}
+Twelve::Twelve(Twelve&& other) noexcept: data(std::move(other.data)) {}
 
 Twelve::~Twelve() noexcept {}
 
 size_t Twelve::getSize(const Twelve& num) 
 {
-    return num._data.size();
+    return num.data.size();
 }
 
 bool Twelve::isZero(const Twelve& num)
 {
-    return num._data.size() == 1 && num._data.get(0) == 0;
+    return num.data.size() == 1 && num.data.get(0) == 0;
 }
 
 int Twelve::compareAbsolute(const Twelve& a, const Twelve& b)
 {
-    if (a._data.size() > b._data.size()) return 1;
-    if (a._data.size() < b._data.size()) return -1;
+    if (a.data.size() > b.data.size()) return 1;
+    if (a.data.size() < b.data.size()) return -1;
 
-    for (int i = a._data.size() - 1; i >= 0; --i)
+    for (int i = a.data.size() - 1; i >= 0; --i)
     {
-        if (a._data.get(i) > b._data.get(i)) return 1;
-        if (a._data.get(i) < b._data.get(i)) return -1;
+        if (a.data.get(i) > b.data.get(i)) return 1;
+        if (a.data.get(i) < b.data.get(i)) return -1;
     }
 
     return 0;
@@ -98,33 +98,33 @@ Twelve Twelve::copy(const Twelve& num)
 
 Twelve Twelve::add(const Twelve& a, const Twelve& b)
 {
-    size_t maxSize = std::max(a._data.size(), b._data.size());
+    size_t maxSize = std::max(a.data.size(), b.data.size());
     Twelve result(maxSize + 1, 0);
 
     int carry = 0;
     for (size_t i = 0; i < maxSize; ++i)
     {
-        int digit_a = (i < a._data.size()) ? a._data.get(i) : 0;
-        int digit_b = (i < b._data.size()) ? b._data.get(i) : 0;
+        int digit_a = (i < a.data.size()) ? a.data.get(i) : 0;
+        int digit_b = (i < b.data.size()) ? b.data.get(i) : 0;
 
         int sum  = digit_a + digit_b + carry;
-        result._data.set(i, sum % 12);
+        result.data.set(i, sum % 12);
         carry = sum / 12;
     }
 
     if (carry > 0)
     {
-        result._data.set(maxSize, carry);
+        result.data.set(maxSize, carry);
     }
     else
     {
         size_t newSize = maxSize;
 
-        while (newSize > 1 && result._data.get(newSize - 1) == 0)
+        while (newSize > 1 && result.data.get(newSize - 1) == 0)
         {
             --newSize;
         }
-        result._data.resize(newSize);
+        result.data.resize(newSize);
     }
 
     return result;
@@ -143,15 +143,15 @@ Twelve Twelve::substract(const Twelve& a, const Twelve& b)
         return Twelve(1, 0);
     }
 
-    size_t maxSize = a._data.size();
+    size_t maxSize = a.data.size();
     Twelve result(maxSize, 0);
 
     int borrow = 0;
 
     for (size_t i = 0; i < maxSize; ++i)
     {
-        int digit_a = a._data.get(i);
-        int digit_b = (i < b._data.size()) ? b._data.get(i) : 0;
+        int digit_a = a.data.get(i);
+        int digit_b = (i < b.data.size()) ? b.data.get(i) : 0;
 
         int diff = digit_a - digit_b - borrow;
 
@@ -166,30 +166,30 @@ Twelve Twelve::substract(const Twelve& a, const Twelve& b)
             borrow = 0;
         }
 
-        result._data.set(i, diff);
+        result.data.set(i, diff);
     }
 
     size_t newSize = maxSize;
-    while(newSize > 1 && result._data.get(newSize - 1) == 0)
+    while(newSize > 1 && result.data.get(newSize - 1) == 0)
     {
         --newSize;
     }
 
-    result._data.resize(newSize);
+    result.data.resize(newSize);
 
     return result;
 }
 
 bool Twelve::equals(const Twelve& a, const Twelve& b) 
 {
-    if (a._data.size() != b._data.size())
+    if (a.data.size() != b.data.size())
     {
         return false;
     }
 
-    for (size_t i = 0; i < a._data.size(); ++i)
+    for (size_t i = 0; i < a.data.size(); ++i)
     {
-        if (a._data.get(i) != b._data.get(i))
+        if (a.data.get(i) != b.data.get(i))
         {
             return false;
         }
@@ -200,23 +200,23 @@ bool Twelve::equals(const Twelve& a, const Twelve& b)
 
 bool Twelve::lessThan(const Twelve& a, const Twelve& b) 
 {
-    if (a._data.size() > b._data.size())
+    if (a.data.size() > b.data.size())
     {
         return false;
     }
 
-    if (a._data.size() < b._data.size())
+    if (a.data.size() < b.data.size())
     {
         return true;
     }
 
-    for (int i = a._data.size() - 1; i >= 0; --i)
+    for (int i = a.data.size() - 1; i >= 0; --i)
     {
-        if (a._data.get(i) > b._data.get(i))
+        if (a.data.get(i) > b.data.get(i))
         {
             return false;
         }
-        else if (a._data.get(i) < b._data.get(i))
+        else if (a.data.get(i) < b.data.get(i))
         {
             return true;
         }
@@ -232,16 +232,16 @@ bool Twelve::greaterThan(const Twelve& a, const Twelve& b)
 
 std::string Twelve::toString(const Twelve& num)
 {
-    if (num._data.empty() || (num._data.size() == 1 && num._data.get(0) == 0))
+    if (num.data.empty() || (num.data.size() == 1 && num.data.get(0) == 0))
     {
         return "0";
     }
 
     std::string result;
 
-    for (int i = num._data.size() - 1; i >= 0; --i)
+    for (int i = num.data.size() - 1; i >= 0; --i)
     {
-        unsigned char digit = num._data.get(i);
+        unsigned char digit = num.data.get(i);
         if (digit < 10)
         {
             result += ('0' + digit);

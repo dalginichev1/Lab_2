@@ -9,7 +9,7 @@ class Twelve
 {
     private:
 
-        Array _data;
+        Array data;
 
     public:
         Twelve();
